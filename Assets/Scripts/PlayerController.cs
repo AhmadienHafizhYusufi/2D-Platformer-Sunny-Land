@@ -17,6 +17,10 @@ public class PlayerController : MonoBehaviour
     // What is considered as ground
     public LayerMask whatIsGround;
 
+    // Reference to the SpriteRenderer component
+    private SpriteRenderer theSR;
+    // Reference to the Animator component
+    private Animator anim;
     // Reference to the Rigidbody2D component
     public Rigidbody2D theRB;
 
@@ -25,6 +29,10 @@ public class PlayerController : MonoBehaviour
     {
         // Get the Rigidbody2D component from the GameObject
         theRB = GetComponent<Rigidbody2D>();
+        // Get the Animator component from the GameObject
+        anim = GetComponent<Animator>();
+        // Get the SpriteRenderer component from the GameObject
+        theSR = GetComponent<SpriteRenderer>();
     }
 
     
@@ -62,5 +70,17 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+
+        if (theRB.linearVelocity.x < 0)
+        {
+            theSR.flipX = true;
+        }
+        else if (theRB.linearVelocity.x > 0)
+        {
+            theSR.flipX = false;
+        }
+
+        anim.SetFloat("moveSpeed", Mathf.Abs(theRB.linearVelocity.x));
+        anim.SetBool("isGrounded", isGrounded);
     }
 }
